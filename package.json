@@ -1,0 +1,26 @@
+{
+  "name": "nodejs-prova",
+  "version": "1.0.0",
+  "description": "Prova disciplina Nodejs + Express + MongoDB",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weslleypfelix/nodejs-prova.git"
+  },
+  "author": "Weslley Felix",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/weslleypfelix/nodejs-prova/issues"
+  },
+  "homepage": "https://github.com/weslleypfelix/nodejs-prova#readme",
+  "dependencies": {
+    "consign": "^0.1.6",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.13",
+    "nodemon": "^2.0.7"
+  }
+}
