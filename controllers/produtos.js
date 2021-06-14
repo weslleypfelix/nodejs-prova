@@ -11,6 +11,10 @@ module.exports = (app) => {
             const Produto = app.models.produtos
             const produto = new Produto(request.body)
 
+            let codigo
+            codigo = parseInt(produto.codigo)
+            produto.codigo = codigo
+            
             if (!produto.dataHoraCadastro) {
                 //Se não for definido a hora e data, ele deverá
                 //cadastrar a data do servidor.
@@ -18,7 +22,7 @@ module.exports = (app) => {
             }
 
             
-
+            
             mongoose.connect(
                 'mongodb://localhost:27017/produtos',
                 {
@@ -29,7 +33,14 @@ module.exports = (app) => {
             ).then(
                 (resultado) => {
                     console.log('Conexão com o mongoDB realizada !..')
-                    if (request.body.codigo == false) {
+
+                    if (codigo <= 0 ) {
+                        console.log(`resultado foi ${produto.codigo}`)
+                        mongoose.disconnect()
+                        response.status(400).send(`Não é possível cadastrar um número 0 ou negativo`)
+                    }
+
+                    if (produto.codigo == false) {
                         console.log(`resultado foi ${request.body.codigo}`)
                         mongoose.disconnect()
                         response.status(400).send(resultado)
