@@ -11,9 +11,17 @@ module.exports = (app) => {
             const Produto = app.models.produtos
             const produto = new Produto(request.body)
 
+            //Buscando código do produto 
+
             let codigo
             codigo = parseInt(produto.codigo)
             produto.codigo = codigo
+
+            //Buscando Código do preço
+
+            let preco
+            preco = produto.preco
+
             
             if (!produto.dataHoraCadastro) {
                 //Se não for definido a hora e data, ele deverá
@@ -39,12 +47,19 @@ module.exports = (app) => {
                         mongoose.disconnect()
                         response.status(400).send(`Não é possível cadastrar um número 0 ou negativo`)
                     }
+                    if (preco <= 0) {
+                        console.log(`resultado foi ${produto.preco}`)
+                        mongoose.disconnect()
+                        response.status(400).send(`Não é possível cadastrar um preco zerado ou negativo`) 
+                    }
 
                     if (produto.codigo == false) {
                         console.log(`resultado foi ${request.body.codigo}`)
                         mongoose.disconnect()
                         response.status(400).send(resultado)
                     }
+
+
                     
                     const resultadoCreate = Produto.create(produto)
                     .then((resultado) => {
