@@ -47,6 +47,13 @@ module.exports = (app) => {
                         mongoose.disconnect()
                         response.status(400).send(`Não é possível cadastrar um número 0 ou negativo`)
                     }
+
+                    if (codigo % 2 == 1) {
+                        console.log(`resultado foi ${produto.codigo}`)
+                        mongoose.disconnect()
+                        response.status(400).send(`Não é possível cadastrar um numero decimal`)
+                    }
+
                     if (preco <= 0) {
                         console.log(`resultado foi ${produto.preco}`)
                         mongoose.disconnect()
