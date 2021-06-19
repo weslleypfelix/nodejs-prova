@@ -126,7 +126,7 @@ module.exports = (app) => {
                 .then((resultadoAlterarProduto) => {
                     if(resultadoAlterarProduto.nModified > 0) {
                             
-                        response.status(200).send(`produto  atualizado  com sucesso! .. Preço: ${request.params.preco}`)
+                        response.status(200).send(`produto  atualizado  com sucesso! .. { Preço: ${request.body.preco} }`)
                         mongoose.disconnect()
                     }else{
                         response.status(500).send("produto  nao  encontrado verifique codigo produto ")
@@ -144,7 +144,9 @@ module.exports = (app) => {
                 response.status(500).send('Erro ao conectar no mongoo')
             })
     },
+
     pesquisar (request, response) {
+        const Produto = app.models.produto
         console.log('rota pesquisar chamada')
 
         mongoose.connect(
@@ -154,18 +156,22 @@ module.exports = (app) => {
                 useUnifiedTopology: true,
                 useCreateIndex: true
             }
-        )
-        .then(() => {
-
-            const Produto = app.models.produtos
-
+        ).then(() => {
+            
             Produto.findOne(
-                { codigo: request.params.codigo }
+            {codigo: request.params.codigo}
             )
             .then((resultadoPesquisar) => {
+                if(resultadoPesquisar.length > 0 ) {
+                console.log("Produtos encontrados: ")
                 console.log(resultadoPesquisar)
                 mongoose.disconnect()
-            })
+            }
+            else {
+                response.status(404).send(`produto ${ request.params.codigo} não cadastrado ` )
+                mongoose.disconnect()
+            }
+        })
             .catch((erro) => {
                 console.log("Erro consultar documento")
                 console.log(erro)

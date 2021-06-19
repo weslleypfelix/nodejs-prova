@@ -1,5 +1,3 @@
-const { response } = require("express")
-const { request } = require("http")
 
 module.exports = (app) => {
 
@@ -9,4 +7,5 @@ module.exports = (app) => {
 
     // app.put('/produto/:codigo/preco', app.controllers.produtos.alterar)
 
+    app.get("/produto/:codigo", app.controllers.produtos.pesquisar)
 }
