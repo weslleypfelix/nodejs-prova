@@ -3,13 +3,10 @@ const { request } = require("http")
 
 module.exports = (app) => {
 
-    app.get('/produto/:codigo', (request, response) => {
-        console.log('Rota pesquisa..! ')
-        response.status(200).send('Acessado com sucesso')
-    })
+    app.put('/produto/:codigo', app.controllers.produtos.alterar)  
 
     app.post('/produto', app.controllers.produtos.cadastrar);
 
-    app.put('/produto/:codigo/preco', app.controllers.produtos.alterar)
+    // app.put('/produto/:codigo/preco', app.controllers.produtos.alterar)
 
 }

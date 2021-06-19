@@ -85,10 +85,15 @@ module.exports = (app) => {
             )
 
         },
+
         alterar(request, response) {
              //informando que a rota alterar foi chamada
              console.log("Rota PUT/ ALTERAR produto chamada")
-             console.log(request.params)
+             
+            //1° Pegar o Schema de produto
+
+            const Produto = app.models.produtos
+
 
             mongoose.connect(
                 'mongodb://localhost:27017/produtos',
@@ -100,27 +105,32 @@ module.exports = (app) => {
             )
             .then(() => {
                 
-                const Produto = app.models.produtos
+                if (request.body.preco > 0) {
                 Produto.updateOne(
                     
-                    { preco: request.params.preco }
+                    { codigo: request.params.codigo },
+                    {
+                        $set: {
+                            preco : request.body.preco,
+                            dataHoraAtualizacao : new Date
+                        }
+                    }
                 )
                 .then((resultadoAlterarProduto) => {
-                    console.log(resultadoAlterarProduto)
-                    mongoose.disconnect()
-                    if(resultadoAlterarProduto.deletedCount > 0) {
-                        response.status(200).send(`Produto selecionado foi alterado`)
-                    }else {
-                        response.status(404).send("Produto não foi localizado")
+                    if(resultadoAlterarProduto.nModified > 0) {
+                            
+                        response.status(200).send(`produto  atualizado  com sucesso! .. Preço: ${request.params.preco}`)
+                        mongoose.disconnect()
+                    }else{
+                        response.status(500).send("produto  nao  encontrado verifique codigo produto ")
+                        mongoose.disconnect()
                     }
                 })
                 .catch((erro) => {
-                    console.log(`Erro ao alterar o documento : ${erro}`)
-                    console.log(erro)
+                    response.status(500).send(`nao atualizado ${erro}` )
                     mongoose.disconnect()
-                    response.status(500).send(`erro ao alterar o documento: ${erro}`)
                 })
-            })
+            }})
             .catch((erro) => {
                 console.log("Erro ao conectar no mongo")
                 console.log(erro)
