@@ -146,7 +146,7 @@ module.exports = (app) => {
     },
 
     pesquisar (request, response) {
-        const Produto = app.models.produto
+        const Produto = app.models.produtos
         console.log('rota pesquisar chamada')
 
         mongoose.connect(
@@ -157,8 +157,9 @@ module.exports = (app) => {
                 useCreateIndex: true
             }
         ).then(() => {
+            console.log(`Ivo ${Produto}`)
             
-            Produto.findOne(
+            Produto.find(
             {codigo: request.params.codigo}
             )
             .then((resultadoPesquisar) => {
